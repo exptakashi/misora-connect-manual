@@ -1,0 +1,496 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2487.4">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px 'Helvetica Neue'}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px 'Helvetica Neue'; min-height: 15.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="ja"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Misora Connect | インタラクティブ利用マニュアル&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.jsdelivr.net/npm/chart.js"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&amp;display=swap" rel="stylesheet"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Chosen Palette: Calm Harmony --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Application Structure Plan: タスクベースのサイドバーナビゲーションを採用したSPA（シングルページアプリケーション）構造。ユーザーが「何をしたいか」に基づいてセクション（例：「初期設定」「ダッシュボードの確認」「SIMの管理」）を直接選択できるため、直線的なマニュアルよりも迅速な情報アクセスが可能。各セクションは独立したビューとして表示され、JavaScriptで表示を切り替える。この構造は、ユーザーが必要な情報へ迷わず到達できる体験を提供し、アプリケーションのような操作感を実現するために選択された。 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Visualization &amp; Content Choices:<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>- レポート情報: 月別データ使用量 -&gt; ゴール: 傾向の視覚的理解 -&gt; Viz/Presentation: 折れ線グラフ -&gt; インタラクション: ツールチップで詳細表示 -&gt; 正当性: 数値の羅列よりも時系列での変化が直感的に把握できる -&gt; ライブラリ: Chart.js (Canvas)</p>
+<p class="p1"><span class="Apple-converted-space">        </span>- レポート情報: プラン別回線数 -&gt; ゴール: 構成比の把握 -&gt; Viz/Presentation: ドーナツグラフ -&gt; インタラクション: ツールチップで詳細表示 -&gt; 正当性: 全体に対する各プランの割合を視覚的に素早く比較できる -&gt; ライブラリ: Chart.js (Canvas)</p>
+<p class="p1"><span class="Apple-converted-space">        </span>- レポート情報: SIM一覧、利用実績 -&gt; ゴール: 特定データの検索・確認 -&gt; Viz/Presentation: 対話型テーブル -&gt; インタラクション: リアルタイムキーワード検索/フィルタ -&gt; 正当性: 静的な表画像と異なり、ユーザーが能動的に情報を絞り込めるため、実用性が高い -&gt; ライブラリ/メソッド: Vanilla JSによるDOM操作</p>
+<p class="p1"><span class="Apple-converted-space">        </span>- レポート情報: 各機能説明 -&gt; ゴール: 機能の理解 -&gt; Viz/Presentation: アイコン付きカードレイアウト -&gt; インタラクション: クリックで詳細表示（将来的な拡張） -&gt; 正当性: テキストの羅列を避け、情報を視覚的に整理することで、可読性と理解度を向上させる -&gt; ライブラリ/メソッド: HTML/CSS (Tailwind)</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Noto Sans JP', sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #f8f9fa;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.nav-link {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.2s ease-in-out;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.nav-link.active {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #e0f2fe;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #0c4a6e;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 600;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.content-section {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: none;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.content-section.active {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: block;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.chart-container {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>max-width: 600px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-left: auto;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-right: auto;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 300px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>max-height: 400px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>@media (min-width: 768px) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>.chart-container {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>height: 350px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>::-webkit-scrollbar {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>::-webkit-scrollbar-track {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: #f1f1f1;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>::-webkit-scrollbar-thumb {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: #d1d5db;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>::-webkit-scrollbar-thumb:hover {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: #9ca3af;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body class="text-gray-800"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="flex h-screen"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;aside class="w-64 bg-white shadow-md flex-shrink-0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="p-4 border-b"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;h1 class="text-xl font-bold text-sky-800"&gt;Misora Connect&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;p class="text-sm text-gray-500"&gt;インタラクティブマニュアル&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;nav class="mt-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;&lt;a href="#initial-setup" class="nav-link flex items-center py-3 px-4 hover:bg-gray-100"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span class="mr-3"&gt;🔑&lt;/span&gt; 初期設定とログイン&lt;/a&gt;&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;&lt;a href="#dashboard" class="nav-link flex items-center py-3 px-4 hover:bg-gray-100"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span class="mr-3"&gt;📊&lt;/span&gt; ダッシュボード&lt;/a&gt;&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;&lt;a href="#sim-list" class="nav-link flex items-center py-3 px-4 hover:bg-gray-100"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span class="mr-3"&gt;📱&lt;/span&gt; SIM一覧と管理&lt;/a&gt;&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;&lt;a href="#usage-records" class="nav-link flex items-center py-3 px-4 hover:bg-gray-100"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span class="mr-3"&gt;📈&lt;/span&gt; 日次・月次利用実績&lt;/a&gt;&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;&lt;a href="#customer-info" class="nav-link flex items-center py-3 px-4 hover:bg-gray-100"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span class="mr-3"&gt;👤&lt;/span&gt; お客様基本情報&lt;/a&gt;&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/nav&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/aside&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;main class="flex-1 overflow-y-auto p-6 md:p-10"&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="initial-setup" class="content-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-3xl font-bold mb-6 border-b pb-2"&gt;初期設定とログイン&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-8 rounded-lg shadow-sm"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="mb-6 text-gray-600"&gt;マイページを初めてご利用になる際の手順です。メールをご確認いただき、パスワード設定からログインまでを行ってください。&lt;/p&gt;</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="space-y-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span class="flex items-center justify-center w-12 h-12 bg-sky-100 text-sky-700 rounded-full text-xl font-bold mb-3"&gt;1&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="text-xl font-semibold mb-2"&gt;利用案内メールの確認&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p&gt;「mypage へようこそ」という件名のメールが届きます。本文中のリンクをクリックしてパスワード設定画面に進んでください。&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-700"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;h4 class="font-bold"&gt;ご注意&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p&gt;パスワード設定リンクは最初の1クリックのみ有効です。2回目以降はログイン画面に遷移します。&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span class="flex items-center justify-center w-12 h-12 bg-sky-100 text-sky-700 rounded-full text-xl font-bold mb-3"&gt;2&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="text-xl font-semibold mb-2"&gt;初期パスワード設定&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p&gt;画面の指示に従い、新しいパスワードを設定します。パスワードは以下の条件を満たす必要があります：&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;ul class="list-disc list-inside mt-2 ml-4 text-gray-600"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;8文字以上&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;1個以上の文字&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;li&gt;1個以上の数値&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span class="flex items-center justify-center w-12 h-12 bg-sky-100 text-sky-700 rounded-full text-xl font-bold mb-3"&gt;3&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="text-xl font-semibold mb-2"&gt;ログイン&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p&gt;設定完了後、以下のログインページから登録したメールアドレスと新しいパスワードでログインします。&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="mt-2"&gt;URL: &lt;a href="#" class="text-sky-600 hover:underline"&gt;https://mypage.marubeni-network-solutions.com&lt;/a&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="dashboard" class="content-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-3xl font-bold mb-6 border-b pb-2"&gt;ダッシュボード&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-8 rounded-lg shadow-sm mb-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-gray-600"&gt;ログイン後のホーム画面では、ご契約状況の概要を視覚的に確認できます。各パネルは自動で更新され、最新の情報を表示します。&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="bg-white p-6 rounded-lg shadow-sm col-span-1 md:col-span-2 lg:col-span-3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="font-semibold mb-2 text-lg"&gt;📢 お知らせ&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="text-gray-600"&gt;現在、重要なお知らせはありません。&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="bg-white p-6 rounded-lg shadow-sm text-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="font-semibold text-gray-500 mb-2"&gt;前月データ使用量 (ご契約全体)&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="text-5xl font-bold text-sky-600"&gt;317&lt;span class="text-2xl ml-1"&gt;GB&lt;/span&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="text-sm text-gray-400 mt-2"&gt;更新日: 2025/08/19 9:22&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="bg-white p-6 rounded-lg shadow-sm text-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="font-semibold text-gray-500 mb-2"&gt;現在回線数&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="text-5xl font-bold text-teal-600"&gt;256&lt;span class="text-2xl ml-1"&gt;回線&lt;/span&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                         </span>&lt;p class="text-sm text-gray-400 mt-2"&gt;更新日: 2025/08/19 9:22&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="bg-white p-6 rounded-lg shadow-sm text-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="font-semibold text-gray-500 mb-2"&gt;アラート&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="text-5xl font-bold text-amber-500"&gt;0&lt;span class="text-2xl ml-1"&gt;件&lt;/span&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                         </span>&lt;p class="text-sm text-gray-400 mt-2"&gt;最新の状態です&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="bg-white p-6 rounded-lg shadow-sm col-span-1 md:col-span-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="font-semibold mb-4 text-center text-lg"&gt;月別データ使用量 (単位: GB)&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="chart-container h-64 md:h-80"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;canvas id="monthlyUsageChart"&gt;&lt;/canvas&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="bg-white p-6 rounded-lg shadow-sm"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="font-semibold mb-4 text-center text-lg"&gt;プラン別回線数&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="chart-container h-64 md:h-80"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;canvas id="planDistributionChart"&gt;&lt;/canvas&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>&lt;div class="bg-white p-6 rounded-lg shadow-sm col-span-1 md:col-span-3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="font-semibold mb-4 text-lg"&gt;データ使用量 TOP 10&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="overflow-x-auto"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;table class="w-full text-sm text-left"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;thead class="text-xs text-gray-700 uppercase bg-gray-50"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;th scope="col" class="px-6 py-3"&gt;電話番号&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;th scope="col" class="px-6 py-3 text-right"&gt;上りデータ (MB)&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;th scope="col" class="px-6 py-3 text-right"&gt;下りデータ (MB)&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;th scope="col" class="px-6 py-3 text-right"&gt;データ量合計 (MB)&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/thead&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;tbody&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;tr class="bg-white border-b"&gt;&lt;td class="px-6 py-4 font-medium"&gt;02001023931678&lt;/td&gt;&lt;td class="px-6 py-4 text-right"&gt;3.08&lt;/td&gt;&lt;td class="px-6 py-4 text-right"&gt;85.31&lt;/td&gt;&lt;td class="px-6 py-4 text-right font-bold"&gt;88.39&lt;/td&gt;&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;tr class="bg-gray-50 border-b"&gt;&lt;td class="px-6 py-4 font-medium"&gt;02001023000123&lt;/td&gt;&lt;td class="px-6 py-4 text-right"&gt;3.70&lt;/td&gt;&lt;td class="px-6 py-4 text-right"&gt;48.67&lt;/td&gt;&lt;td class="px-6 py-4 text-right font-bold"&gt;52.37&lt;/td&gt;&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;tr class="bg-white border-b"&gt;&lt;td class="px-6 py-4 font-medium"&gt;02001023061233&lt;/td&gt;&lt;td class="px-6 py-4 text-right"&gt;1.59&lt;/td&gt;&lt;td class="px-6 py-4 text-right"&gt;4.61&lt;/td&gt;&lt;td class="px-6 py-4 text-right font-bold"&gt;6.20&lt;/td&gt;&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;tr class="bg-gray-50 border-b"&gt;&lt;td class="px-6 py-4 font-medium"&gt;02001023048540&lt;/td&gt;&lt;td class="px-6 py-4 text-right"&gt;856.10&lt;/td&gt;&lt;td class="px-6 py-4 text-right"&gt;2.70&lt;/td&gt;&lt;td class="px-6 py-4 text-right font-bold"&gt;3.55&lt;/td&gt;&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;tr class="bg-white border-b"&gt;&lt;td class="px-6 py-4 font-medium"&gt;0200102307825&lt;/td&gt;&lt;td class="px-6 py-4 text-right"&gt;90.42&lt;/td&gt;&lt;td class="px-6 py-4 text-right"&gt;309.06&lt;/td&gt;&lt;td class="px-6 py-4 text-right font-bold"&gt;399.48&lt;/td&gt;&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/tbody&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/table&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="sim-list" class="content-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-3xl font-bold mb-6 border-b pb-2"&gt;SIM一覧と管理&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-8 rounded-lg shadow-sm"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="mb-6 text-gray-600"&gt;ご契約中のSIM回線情報を一覧で確認・管理できます。検索やフィルタ機能を使って、目的のSIMを素早く見つけることが可能です。&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="flex flex-col md:flex-row items-center justify-between mb-4 gap-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="relative w-full md:w-1/3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;input type="text" id="simSearchInput" class="w-full p-2 pl-10 border rounded-md" placeholder="キーワードで検索..."&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"&gt;🔍&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button class="w-full md:w-auto bg-sky-600 text-white px-4 py-2 rounded-md hover:bg-sky-700"&gt;エクスポート (Excel)&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="overflow-x-auto"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;table id="simTable" class="w-full text-sm text-left"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;thead class="text-xs text-gray-700 uppercase bg-gray-50"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;th class="px-6 py-3"&gt;製造番号/ICCID&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;th class="px-6 py-3"&gt;商品マスタ&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;th class="px-6 py-3"&gt;電話番号&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;th class="px-6 py-3"&gt;キャリア開通日&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;th class="px-6 py-3"&gt;状態&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;th class="px-6 py-3"&gt;アクション&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/thead&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;tbody&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;!-- JSでデータ挿入 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/tbody&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/table&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="mt-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="text-xl font-semibold mb-4"&gt;SIM詳細画面の機能&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="grid grid-cols-1 md:grid-cols-2 gap-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="bg-gray-50 p-4 rounded-lg"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;h4 class="font-bold"&gt;📝 備考&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-gray-600"&gt;回線ごとにメモを登録し、管理に役立てることができます。（例：設置場所、利用者名など）&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="bg-gray-50 p-4 rounded-lg"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;h4 class="font-bold"&gt;⏸️ 回線一時停止&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;p class="text-gray-600"&gt;SIMの紛失・盗難時や、意図しない大量通信が発生した場合に、遠隔で通信を一時停止・再開できます。&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="usage-records" class="content-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-3xl font-bold mb-6 border-b pb-2"&gt;日次・月次利用実績&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-8 rounded-lg shadow-sm"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="mb-6 text-gray-600"&gt;回線ごとのデータ使用量を日単位または月単位で確認できます。CSV形式でのダウンロードも可能です。&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="border-b border-gray-200"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;nav class="-mb-px flex space-x-8" aria-label="Tabs"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;a href="#" id="daily-tab" class="tab-link border-sky-500 text-sky-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"&gt;日次利用実績&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;a href="#" id="monthly-tab" class="tab-link border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"&gt;月次利用実績&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/nav&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="daily-content" class="tab-content mt-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="flex flex-col md:flex-row gap-4 mb-4 p-4 bg-gray-50 rounded-md"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;input type="date" class="p-2 border rounded-md w-full md:w-auto"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;input type="date" class="p-2 border rounded-md w-full md:w-auto"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;input type="text" class="p-2 border rounded-md w-full md:w-auto flex-grow" placeholder="加入者電話番号"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;button class="bg-red-600 text-white px-6 py-2 rounded-md hover:bg-red-700"&gt;検索&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;button class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"&gt;CSVダウンロード&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                         </span>&lt;p class="text-sm text-gray-500 mb-4 p-4 bg-blue-50 border-l-4 border-blue-400"&gt;※実績は、ご利用のあった回線のみ表示されます。データ通信がなくても、端末が通信網に接続している場合、0 byteと表示されることがあります。&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="overflow-x-auto"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;table class="w-full text-sm text-left"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;thead class="text-xs text-gray-700 uppercase bg-gray-50"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;tr&gt;&lt;th class="px-6 py-3"&gt;利用日&lt;/th&gt;&lt;th class="px-6 py-3 text-right"&gt;上りデータ (byte)&lt;/th&gt;&lt;th class="px-6 py-3 text-right"&gt;下りデータ (byte)&lt;/th&gt;&lt;th class="px-6 py-3 text-right"&gt;データ量合計 (byte)&lt;/th&gt;&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/thead&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;tbody&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;tr class="bg-white border-b"&gt;&lt;td class="px-6 py-4"&gt;2025/08/01&lt;/td&gt;&lt;td class="px-6 py-4 text-right"&gt;518,604,243&lt;/td&gt;&lt;td class="px-6 py-4 text-right"&gt;5,335,351,899&lt;/td&gt;&lt;td class="px-6 py-4 text-right"&gt;5,853,956,142&lt;/td&gt;&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;tr class="bg-gray-50 border-b"&gt;&lt;td class="px-6 py-4"&gt;2025/08/02&lt;/td&gt;&lt;td class="px-6 py-4 text-right"&gt;125,293,456&lt;/td&gt;&lt;td class="px-6 py-4 text-right"&gt;3,017,528,223&lt;/td&gt;&lt;td class="px-6 py-4 text-right"&gt;3,142,821,679&lt;/td&gt;&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;tr class="bg-white border-b"&gt;&lt;td class="px-6 py-4"&gt;2025/08/03&lt;/td&gt;&lt;td class="px-6 py-4 text-right"&gt;1,255,099,815&lt;/td&gt;&lt;td class="px-6 py-4 text-right"&gt;12,088,195,667&lt;/td&gt;&lt;td class="px-6 py-4 text-right"&gt;13,343,295,482&lt;/td&gt;&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/tbody&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/table&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="monthly-content" class="tab-content mt-6" style="display: none;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="flex items-center justify-between mb-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="flex space-x-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;button class="px-4 py-2 text-sm rounded-md bg-gray-200"&gt;202508&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;button class="px-4 py-2 text-sm rounded-md hover:bg-gray-100"&gt;202507&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;button class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"&gt;CSVダウンロード&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                         </span>&lt;div class="overflow-x-auto"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                             </span>&lt;table class="w-full text-sm text-left"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;thead class="text-xs text-gray-700 uppercase bg-gray-50"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;tr&gt;&lt;th class="px-6 py-3"&gt;加入者電話番号&lt;/th&gt;&lt;th class="px-6 py-3"&gt;ICCID&lt;/th&gt;&lt;th class="px-6 py-3 text-right"&gt;データ量合計 (byte)&lt;/th&gt;&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/thead&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;tbody&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;tr class="bg-white border-b"&gt;&lt;td class="px-6 py-4"&gt;02001024222144&lt;/td&gt;&lt;td class="px-6 py-4"&gt;8981080301005363443&lt;/td&gt;&lt;td class="px-6 py-4 text-right"&gt;1,569,105&lt;/td&gt;&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;tr class="bg-gray-50 border-b"&gt;&lt;td class="px-6 py-4"&gt;02001020877071&lt;/td&gt;&lt;td class="px-6 py-4"&gt;GD0605975057100&lt;/td&gt;&lt;td class="px-6 py-4 text-right"&gt;1,626,019&lt;/td&gt;&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;tr class="bg-white border-b"&gt;&lt;td class="px-6 py-4"&gt;02001020935529&lt;/td&gt;&lt;td class="px-6 py-4"&gt;GD0605968660350&lt;/td&gt;&lt;td class="px-6 py-4 text-right"&gt;698,108,214&lt;/td&gt;&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/tbody&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/table&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="customer-info" class="content-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-3xl font-bold mb-6 border-b pb-2"&gt;お客様基本情報&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-8 rounded-lg shadow-sm"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="mb-6 text-gray-600"&gt;マイページをご利用中のご担当者様情報が表示されます。アカウント数の上限はご契約内容によって異なります。&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="overflow-x-auto"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;table class="w-full text-sm text-left"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;thead class="text-xs text-gray-700 uppercase bg-gray-50"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;th class="px-6 py-3"&gt;ご担当者名&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;th class="px-6 py-3"&gt;メールアドレス&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;th class="px-6 py-3"&gt;電話番号&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/thead&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;tbody&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;tr class="bg-white border-b"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td class="px-6 py-4"&gt;竹島&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td class="px-6 py-4"&gt;takeshima751@marubeni-network.com&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td class="px-6 py-4"&gt;999-9999&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;tr class="bg-gray-50 border-b"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td class="px-6 py-4"&gt;TEST 淳平&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td class="px-6 py-4"&gt;suzuki650@marubeni-network.com&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td class="px-6 py-4"&gt;999-9999&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/tbody&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/table&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/main&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;script&gt;</p>
+<p class="p1">document.addEventListener('DOMContentLoaded', function () {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const navLinks = document.querySelectorAll('.nav-link');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const contentSections = document.querySelectorAll('.content-section');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function navigateToSection(hash) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let targetHash = hash || window.location.hash || '#initial-setup';</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>let sectionId = targetHash.substring(1);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let targetSection = document.getElementById(sectionId);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (!targetSection) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>targetSection = document.getElementById('initial-setup');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>targetHash = '#initial-setup';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>contentSections.forEach(section =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>section.classList.remove('active');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>targetSection.classList.add('active');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>navLinks.forEach(link =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>link.classList.remove('active');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (link.getAttribute('href') === targetHash) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>link.classList.add('active');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>navLinks.forEach(link =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>link.addEventListener('click', function (e) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>e.preventDefault();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const targetHash = this.getAttribute('href');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>history.pushState(null, null, targetHash);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>navigateToSection(targetHash);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>window.addEventListener('popstate', () =&gt; navigateToSection(window.location.hash));</p>
+<p class="p1"><span class="Apple-converted-space">    </span>navigateToSection();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const monthlyUsageCtx = document.getElementById('monthlyUsageChart')?.getContext('2d');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (monthlyUsageCtx) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>new Chart(monthlyUsageCtx, {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>type: 'line',</p>
+<p class="p1"><span class="Apple-converted-space">            </span>data: {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>labels: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月'],</p>
+<p class="p1"><span class="Apple-converted-space">                </span>datasets: [{</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>label: 'データ使用量 (GB)',</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>data: [177, 197, 187, 291, 298, 306, 287, 353],</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>borderColor: '#0284c7',</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>backgroundColor: 'rgba(2, 132, 199, 0.1)',</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>fill: true,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>tension: 0.4</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}]</p>
+<p class="p1"><span class="Apple-converted-space">            </span>},</p>
+<p class="p1"><span class="Apple-converted-space">            </span>options: {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>responsive: true,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>maintainAspectRatio: false,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>scales: { y: { beginAtZero: true } }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const planDistributionCtx = document.getElementById('planDistributionChart')?.getContext('2d');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (planDistributionCtx) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>new Chart(planDistributionCtx, {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>type: 'doughnut',</p>
+<p class="p1"><span class="Apple-converted-space">            </span>data: {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>labels: ['シェアプラン', '無制限プラン', '1GBプラン', 'その他'],</p>
+<p class="p1"><span class="Apple-converted-space">                </span>datasets: [{</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>label: '回線数',</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>data: [62, 24, 21, 40],</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>backgroundColor: ['#0ea5e9', '#14b8a6', '#f97316', '#a8a29e'],</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>hoverOffset: 4</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}]</p>
+<p class="p1"><span class="Apple-converted-space">            </span>},</p>
+<p class="p1"><span class="Apple-converted-space">            </span>options: {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>responsive: true,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>maintainAspectRatio: false,</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const simData = [</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ iccid: '8981080301007779109', plan: '100MB-1GB/月2段階 ライト/フル', phone: '02001023141512', date: '2024/08/14', status: '利用中' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ iccid: '8981080301007907820', plan: '500MB-1GB/月2段階 ライト/フル', phone: '02001021869479', date: '2024/07/29', status: '利用中' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ iccid: 'GD060597871840', plan: '100MB-1GB/月2段階 ライト/フル', phone: '02001021029731', date: '2024/09/13', status: '利用中' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ iccid: 'GD060597871900', plan: '500MB-1GB/月2段階 ライト/フル', phone: '02001022016916', date: '2025/01/23', status: '利用中' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>{ iccid: 'GD060597871880', plan: '100MB-1GB/月2段階 ライト/フル', phone: '02001022173895', date: '2024/07/29', status: '停止中' },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const simTableBody = document.querySelector('#simTable tbody');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function renderSimTable(data) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>simTableBody.innerHTML = '';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (data.length === 0) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>simTableBody.innerHTML = '&lt;tr&gt;&lt;td colspan="6" class="text-center py-8 text-gray-500"&gt;該当するSIMが見つかりません。&lt;/td&gt;&lt;/tr&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>data.forEach(sim =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const row = document.createElement('tr');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>row.className = 'bg-white border-b hover:bg-gray-50';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>row.innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;td class="px-6 py-4 font-medium"&gt;${sim.iccid}&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;td class="px-6 py-4"&gt;${sim.plan}&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;td class="px-6 py-4"&gt;${sim.phone}&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;td class="px-6 py-4"&gt;${sim.date}&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;td class="px-6 py-4"&gt;&lt;span class="px-2 py-1 text-xs font-medium rounded-full ${sim.status === '利用中' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}"&gt;${sim.status}&lt;/span&gt;&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;td class="px-6 py-4"&gt;&lt;a href="#" class="font-medium text-sky-600 hover:underline"&gt;詳細&lt;/a&gt;&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>simTableBody.appendChild(row);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>renderSimTable(simData);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const simSearchInput = document.getElementById('simSearchInput');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>simSearchInput.addEventListener('keyup', () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const searchTerm = simSearchInput.value.toLowerCase();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const filteredData = simData.filter(sim =&gt;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>sim.iccid.toLowerCase().includes(searchTerm) ||</p>
+<p class="p1"><span class="Apple-converted-space">            </span>sim.plan.toLowerCase().includes(searchTerm) ||</p>
+<p class="p1"><span class="Apple-converted-space">            </span>sim.phone.toLowerCase().includes(searchTerm)</p>
+<p class="p1"><span class="Apple-converted-space">        </span>);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>renderSimTable(filteredData);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const dailyTab = document.getElementById('daily-tab');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const monthlyTab = document.getElementById('monthly-tab');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const dailyContent = document.getElementById('daily-content');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const monthlyContent = document.getElementById('monthly-content');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>dailyTab.addEventListener('click', (e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>e.preventDefault();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>dailyTab.classList.add('border-sky-500', 'text-sky-600');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>dailyTab.classList.remove('border-transparent', 'text-gray-500');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>monthlyTab.classList.add('border-transparent', 'text-gray-500');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>monthlyTab.classList.remove('border-sky-500', 'text-sky-600');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>dailyContent.style.display = 'block';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>monthlyContent.style.display = 'none';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>monthlyTab.addEventListener('click', (e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>e.preventDefault();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>monthlyTab.classList.add('border-sky-500', 'text-sky-600');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>monthlyTab.classList.remove('border-transparent', 'text-gray-500');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>dailyTab.classList.add('border-transparent', 'text-gray-500');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>dailyTab.classList.remove('border-sky-500', 'text-sky-600');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>monthlyContent.style.display = 'block';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>dailyContent.style.display = 'none';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p1">});</p>
+<p class="p1">&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
